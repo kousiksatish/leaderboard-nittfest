@@ -17,6 +17,10 @@ Route::get('/', function () {
         ->groupBy('dept')
         ->orderBy('points', 'desc')
         ->get();
+    $clusters = DB::table('complete_leaderboard')
+    	->select('eventcluster')
+    	->groupBy('eventcluster')
+    	->lists('eventcluster');
     $depts = DB::table('pragyanV3_users')
     		->where('user_id', '>', '10000')
     		->lists('user_name');
@@ -50,5 +54,34 @@ Route::get('/', function () {
 
     	}
     }
-	return view('content', compact('points'));
+
+    $cluster_points = [];
+    foreach($clusters as $cluster)
+    {
+    	$cluster_details = DB::table('complete_leaderboard')
+	        ->select('dept', DB::raw('SUM(points) as points'))
+	        ->where('eventcluster', $cluster)
+	        ->groupBy('dept')
+	        ->orderBy('points', 'desc')
+	        ->get();
+	    $rank = 0;
+	    $oldpoints = -1;
+	    $idx = 1;
+	    foreach ($cluster_details as $point)
+	    {
+	    	if($oldpoints!=$point->points)
+	    	{
+	    		$rank+=$idx;
+	    		$idx = 1;
+	    	}
+	    	else
+	    		$idx++;
+	    	$point->rank = $rank;
+	    	$oldpoints = $point->points;
+	    }
+	    $cluster_points[$cluster] = $cluster_details;
+    }
+    // return $points;
+    // return $cluster_points;
+	return view('content', compact(array('points', 'cluster_points')));
 });
