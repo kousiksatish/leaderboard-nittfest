@@ -18,7 +18,7 @@
 					leaderboard-leader3
 				@endif">
 				<div class="leaderboard-row rank-grid">{{  $highScore->rank  }}</div>
-				<div class="leaderboard-row name-grid ">{{  $highScore->dept }}</div>
+				<div class="leaderboard-row name-grid ">{!!  strtoupper($highScore->dept) !!}</div>
 				<div class="leaderboard-row score-grid">{{  $highScore->points }}</div>
 				</div>
 	@endforeach

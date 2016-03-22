@@ -50,22 +50,22 @@
 		.name-grid
 		{
 
-			width:58%;
+			width:54%;
 		}
-		
+
 		</style>
 	</head>
 	<body>
 		<br><br>
 		<div class="container">
-			<center><h1 class="text-info">NITTFEST '16</h1></center>
-			<center><h1 class="text-info">Leaderboard</h1></center>
+			<center><h1 class="text-info">NITTFEST '16 - Leaderboard</h1></center>
 			<br><br>
 			<div class="row">
 				@yield('content')
 			</div>
 		</div>
 	</body>
-	    <script src="{% static "js/jquery.min.js" %}"></script>
-		<script src="{% static "bootstrap-3.3.6-dist/js/bootstrap.min.js" %}"></script>
+	<footer class="footer">
+		<center><h3 class="text-info">Made with &hearts; by <a href="http://delta.nitt.edu/">Delta Force</a></h1></center>
+	</footer>
 </html>
