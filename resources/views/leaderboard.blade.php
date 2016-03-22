@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="{{asset("bootstrap.min.css")}}" />
-		<title>Beerfactory 16 LeaderBoard</title>
+		<title>NITTFEST 16 LeaderBoard</title>
 		<style>
 		.leaderboard-row
 		{
