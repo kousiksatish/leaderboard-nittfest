@@ -29,29 +29,12 @@ Route::get('/', function () {
 	    		->where('user_id', '<', '10013')
 	    		->lists('user_name');
 	   	$depts = array_fill_keys($depts, 0);
-	   	//return $depts;
-	    $rank = 0;
-	    $oldpoints = -1;
-	    $idx = 1;
-	    foreach ($points as $point)
-	    {
-	    	if($oldpoints!=$point->points)
-	    	{
-	    		$rank+=$idx;
-	    		$idx = 1;
-	    	}
-	    	else
-	    		$idx++;
-	    	$point->rank = $rank;
-	    	$depts[$point->dept] = 1;
-	    	$oldpoints = $point->points;
-	    }
+	    
 	    foreach($depts as $key=>$value)
 	    {
 	    	if($value==0)
 	    	{
 	    		$pts = new stdClass();
-	    		$pts->rank = $rank+$idx;
 	    		$pts->dept = $key;
 	    		$pts->points = number_format(0,2);
 	    		array_push($points, $pts);
@@ -64,34 +47,6 @@ Route::get('/', function () {
 	{
 		return response()->json(['status' => '101', 'data' => 'Error']);
 	}
-    /*
-    $cluster_points = [];
-    foreach($clusters as $cluster)
-    {
-    	$cluster_details = DB::table('complete_leaderboard')
-	        ->select('dept', DB::raw('SUM(points) as points'))
-	        ->where('eventcluster', $cluster)
-	        ->groupBy('dept')
-	        ->orderBy('points', 'desc')
-	        ->get();
-	    $rank = 0;
-	    $oldpoints = -1;
-	    $idx = 1;
-	    foreach ($cluster_details as $point)
-	    {
-	    	if($oldpoints!=$point->points)
-	    	{
-	    		$rank+=$idx;
-	    		$idx = 1;
-	    	}
-	    	else
-	    		$idx++;
-	    	$point->rank = $rank;
-	    	$oldpoints = $point->points;
-	    }
-	    $cluster_points[$cluster] = $cluster_details;
-    }
-    */
 
 	
 });
