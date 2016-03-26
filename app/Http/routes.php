@@ -26,6 +26,7 @@ Route::post('/', function () {
 	    	->lists('eventcluster');
 	    $depts = DB::table('pragyanV3_users')
 	    		->where('user_id', '>', '10000')
+	    		->where('user_id', '<', '10013')
 	    		->lists('user_name');
 	   	$depts = array_fill_keys($depts, 0);
 	   	//return $depts;
