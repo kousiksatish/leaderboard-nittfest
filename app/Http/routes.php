@@ -20,16 +20,15 @@ Route::get('/', function () {
 	        ->groupBy('dept')
 	        ->orderBy('points', 'desc')
 	        ->get();
-	    $clusters = DB::table('complete_leaderboard')
-	    	->select('eventcluster')
-	    	->groupBy('eventcluster')
-	    	->lists('eventcluster');
 	    $depts = DB::table('pragyanV3_users')
 	    		->where('user_id', '>', '10000')
 	    		->where('user_id', '<', '10013')
 	    		->lists('user_name');
 	   	$depts = array_fill_keys($depts, 0);
-	    
+	    foreach ($points as $point)
+	    {
+	    	$depts[$point->dept] = 1;
+	    }
 	    foreach($depts as $key=>$value)
 	    {
 	    	if($value==0)
