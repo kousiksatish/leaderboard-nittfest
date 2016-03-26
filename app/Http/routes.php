@@ -11,50 +11,59 @@
 |
 */
 use App\Leaderboard as Leaderboard;
-Route::get('/', function () {
-	$points = DB::table('complete_leaderboard')
-        ->select('dept', DB::raw('SUM(points) as points'))
-        ->groupBy('dept')
-        ->orderBy('points', 'desc')
-        ->get();
-    $clusters = DB::table('complete_leaderboard')
-    	->select('eventcluster')
-    	->groupBy('eventcluster')
-    	->lists('eventcluster');
-    $depts = DB::table('pragyanV3_users')
-    		->where('user_id', '>', '10000')
-    		->lists('user_name');
-   	$depts = array_fill_keys($depts, 0);
-   	//return $depts;
-    $rank = 0;
-    $oldpoints = -1;
-    $idx = 1;
-    foreach ($points as $point)
-    {
-    	if($oldpoints!=$point->points)
-    	{
-    		$rank+=$idx;
-    		$idx = 1;
-    	}
-    	else
-    		$idx++;
-    	$point->rank = $rank;
-    	$depts[$point->dept] = 1;
-    	$oldpoints = $point->points;
-    }
-    foreach($depts as $key=>$value)
-    {
-    	if($value==0)
-    	{
-    		$pts = new stdClass();
-    		$pts->rank = $rank+$idx;
-    		$pts->dept = $key;
-    		$pts->points = number_format(0,2);
-    		array_push($points, $pts);
 
-    	}
-    }
+Route::post('/', function () {
+	try
+	{
+		$points = DB::table('complete_leaderboard')
+	        ->select('dept', DB::raw('SUM(points) as points'))
+	        ->groupBy('dept')
+	        ->orderBy('points', 'desc')
+	        ->get();
+	    $clusters = DB::table('complete_leaderboard')
+	    	->select('eventcluster')
+	    	->groupBy('eventcluster')
+	    	->lists('eventcluster');
+	    $depts = DB::table('pragyanV3_users')
+	    		->where('user_id', '>', '10000')
+	    		->lists('user_name');
+	   	$depts = array_fill_keys($depts, 0);
+	   	//return $depts;
+	    $rank = 0;
+	    $oldpoints = -1;
+	    $idx = 1;
+	    foreach ($points as $point)
+	    {
+	    	if($oldpoints!=$point->points)
+	    	{
+	    		$rank+=$idx;
+	    		$idx = 1;
+	    	}
+	    	else
+	    		$idx++;
+	    	$point->rank = $rank;
+	    	$depts[$point->dept] = 1;
+	    	$oldpoints = $point->points;
+	    }
+	    foreach($depts as $key=>$value)
+	    {
+	    	if($value==0)
+	    	{
+	    		$pts = new stdClass();
+	    		$pts->rank = $rank+$idx;
+	    		$pts->dept = $key;
+	    		$pts->points = number_format(0,2);
+	    		array_push($points, $pts);
 
+	    	}
+	    }
+	    return response()->json(['status' => '200', 'data' => $points]);
+	}
+	catch(\Exception $e)
+	{
+		return response()->json(['status' => '101', 'data' => 'Error']);
+	}
+    /*
     $cluster_points = [];
     foreach($clusters as $cluster)
     {
@@ -81,7 +90,7 @@ Route::get('/', function () {
 	    }
 	    $cluster_points[$cluster] = $cluster_details;
     }
-    // return $points;
-    // return $cluster_points;
-	return view('content', compact(array('points', 'cluster_points')));
+    */
+
+	
 });
