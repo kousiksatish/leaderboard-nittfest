@@ -12,7 +12,7 @@
 */
 use App\Leaderboard as Leaderboard;
 
-Route::post('/', function () {
+Route::get('/', function () {
 	try
 	{
 		$points = DB::table('complete_leaderboard')
