@@ -17,10 +17,6 @@ Route::get('/', function () {
         ->groupBy('dept')
         ->orderBy('points', 'desc')
         ->get();
-    $clusters = DB::table('complete_leaderboard')
-    	->select('eventcluster')
-    	->groupBy('eventcluster')
-    	->lists('eventcluster');
     $depts = DB::table('pragyanV3_users')
     		->where('user_id', '>', '10000')
     		->where('user_id', '<', '10013')
@@ -55,7 +51,12 @@ Route::get('/', function () {
 
     	}
     }
-
+    /* CLUSTER WISE LEADERBOARD */
+    /*
+    $clusters = DB::table('complete_leaderboard')
+        ->select('eventcluster')
+        ->groupBy('eventcluster')
+        ->lists('eventcluster');
     $cluster_points = [];
     foreach($clusters as $cluster)
     {
@@ -82,7 +83,11 @@ Route::get('/', function () {
 	    }
 	    $cluster_points[$cluster] = $cluster_details;
     }
+
     // return $points;
     // return $cluster_points;
 	return view('content', compact(array('points', 'cluster_points')));
+    */
+
+    return view('content-withoutcluster', compact('points'));
 });
