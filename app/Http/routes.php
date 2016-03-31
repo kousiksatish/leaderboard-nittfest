@@ -30,11 +30,8 @@ Route::get('/', function () {
     {
     	if($oldpoints!=$point->points)
     	{
-    		$rank+=$idx;
-    		$idx = 1;
+    		$rank++;
     	}
-    	else
-    		$idx++;
     	$point->rank = $rank;
     	$depts[$point->dept] = 1;
     	$oldpoints = $point->points;
